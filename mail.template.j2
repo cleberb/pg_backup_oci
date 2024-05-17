@@ -1,0 +1,195 @@
+<!doctype html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=11;IE=10;IE=9;IE=8;IE=7;IE=EDGE" />
+    <title>{{ backup_description }}</title>
+  </head>
+
+  <body>
+    <style type="text/css">
+
+      /* INFO: Yahoo mail app doesn't show css styles when set inside head tag */
+
+      a:link {
+        text-decoration:none;
+      }
+
+      .body {
+        font-family: 'Open sans', sans-serif;
+        border-radius: 5px;
+        border-style: solid;
+        border-width: 2px;
+        border-color: #112748;
+        margin: 25px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        padding: 15px;
+      }
+
+      #header {
+        border-radius: 5px;
+        color: white;
+        font-size: 30px;
+        font-weight: bold;
+        margin: 25px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        padding: 15px;
+      }
+
+      .header-success {
+        background-color: #117e55;
+      }
+
+      .header-failure {
+        background-color: #bf1b00;
+      }
+
+      .status-success {
+        color: #117e55;
+      }
+
+      .status-failure {
+        color: #bf1b00;
+      }
+
+      .icon {
+        font-size: 35px;
+      }
+
+      .data {
+        margin: 25px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+
+      .log {
+        border-radius: 5px;
+        background-color: #010409;
+        border: 1px solid #21262d;
+        margin: 25px;
+        margin-top: 15px;
+        margin-bottom: 15px;
+        padding: 0px;
+      }
+
+      .header-log {
+        font-weight: bold;
+        color: #c9d1d9;
+        font-size: 16px !important;
+      }
+
+      .content {
+        border-top: 1px solid #21262d;
+        color: #8b949e;
+        font-family: ui-monospace,SFMono-Regular,SF Mono,Menlo,Consolas,Liberation Mono,monospace !important;
+        font-size: 12px !important;
+      }
+
+      .content > pre {
+        overflow: auto;
+        display: grid;
+      }
+
+      .footer {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        font-weight: bold;
+        color: #112748;
+      }
+
+      .footer > a {
+        text-decoration: none;
+        color: inherit;
+        outline: 0;
+      }
+    </style>
+
+    <!-- CSS for non-OUTLOOK clients -->
+    <!--[if !mso]><!-->
+      <style type="text/css">
+        .header-log {
+          padding: 15px;
+        }
+        .content {
+          padding: 15px;
+        }
+      </style>
+    <!--<![endif]-->
+
+    <!-- CSS for OUTLOOK clients -->
+    <!--[if mso]>
+      <style type="text/css">
+        .header-log {
+          padding: 0px;
+        }
+        .content {
+          padding: 0px;
+        }
+      </style>
+    <![endif]-->
+
+    <div class="body">
+      {% if backup_status == 'success' %}
+        {% set class = 'success' %}
+        {% set icon = '&#9989;' %}
+      {% else %}
+        {% set class = 'failure' %}
+        {% set icon = '&#9888;&#65039;' %}
+      {% endif %}
+      {% set undefined = '<b class="status-failure">Undefined</b>' %}
+      <!-- Outlook read only first class listed in the class attribute -->
+      <div id="header" class="header-{{ class }}">
+        <span class="icon">{{ icon }}</span> {{ backup_description }}
+      </div>
+      <div class="data">
+        <b>Status do backup:</b> <b class="status-{{ class }}">{{ backup_status|upper }}</b><br/>
+        <b>Descrição do backup:</b> {{ backup_description }}<br/>
+        {% if oci_volume_display_name %}
+        <b>Block Volume:</b> <a title="Block Volume {{ oci_volume_display_name }}" href="https://cloud.oracle.com/block-storage/volumes/{{ oci_volume_ocid }}">{{ oci_volume_display_name }}</a><br/>
+        <b>Tamanho do Block Volume:</b> {{ oci_volume_size_in_gbs }} GB<br/>
+        {% elif oci_volume_ocid %}
+        <b>Block Volume OCID:</b> <a title="Block Volume" href="https://cloud.oracle.com/block-storage/volumes/{{ oci_volume_ocid }}">{{ oci_volume_ocid }}</a><br/>
+        {% else %}
+        <b>Block Volume:</b> -<br/>
+        {% endif %}
+        {% if oci_compartiment_name %}
+        <b>Compartimento:</b> <a title="Compartimento {{ oci_compartiment_name }}" href="https://cloud.oracle.com/identity/compartments/{{ oci_compartiment_ocid }}">{{ oci_compartiment_name }}</a><br/>
+        {% elif oci_compartiment_ocid %}
+        <b>Compartimento OCID:</b> <a title="Compartimento" href="https://cloud.oracle.com/identity/compartments/{{ oci_compartiment_ocid }}">{{ oci_compartiment_ocid }}</a><br/>
+        {% else %}
+        <b>Compartimento:</b> -<br/>
+        {% endif %}
+        {% if oci_volume_backup_ocid %}
+        <b>Backup Block Volume:</b> <a title="Backup Block Volume {{ oci_volume_backup_display_name }}" href="https://cloud.oracle.com/block-storage/volume-backups/{{ oci_volume_backup_ocid }}">{{ oci_volume_backup_display_name }}</a><br/>
+        <b>Tamanho do Backup Block Volume:</b> {{ oci_volume_backup_unique_size_in_gbs }}  GB<br/>
+        {% else %}
+        <b>Backup Block Volume:</b> -<br/>
+        {% endif %}
+        <b>Início do backup:</b> {{ start_exec.strftime('%Y-%m-%d %H:%M:%S') }}<br/>
+        <b>Fim do backup:</b> {{ end_exec.strftime('%Y-%m-%d %H:%M:%S') }}<br/>
+        <b>Duração do backup:</b> {{ duration_exec }}<br/>
+        <b>Script:</b> {{ script_name }} - Versão {{ script_version }}<br/>
+      </div>
+
+      {% if logs %}
+        <div class="log">
+          <div class="header-log">LOGS:</div>
+          <div class="content">
+            <pre>{{ logs }}</pre>
+          </div>
+        </div>
+      {% endif %}
+
+      <br/>
+      <br/>
+      <div class="footer"><a title="{{ company_name }}" href="{{ company_site }}">{{ company_name }} © {{ start_exec.strftime('%Y') }}<br/>{{ company_department }}</a></div>
+    </div>
+  </body>
+</html>

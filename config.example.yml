@@ -1,0 +1,99 @@
+company:
+  # Nome da empresa
+  name: EMPRESA-XXX
+  # Departamento responsável pelo backup
+  department: Infraestrutura de T.I.
+  # Link para a página principal da empresa
+  site: https://www.linkedin.com/in/cleberson-batista/
+
+backup:
+  # Descrição geral do backup, como qual aplicativo ou sistema está sendo protegido
+  description: Backup da base de dados do APP XXX.
+
+database:
+  # Nome do banco de dados utilizado para conexão SQL
+  name: postgres
+  # Usuário de conexão
+  user: backup_db
+  # Senha do usuário de conexão
+  pass: backup_db123
+  # Endereço do servidor
+  host: localhost
+  # Porta do serviço
+  port: 5432
+  # Tempo limite de conexão inicial
+  connect_timeout: 15
+  # Habilitar keepalives
+  # Valores válidos: [true|false]
+  keepalives: true
+  # Tempo de inatividade após o último keepalive antes de considerar a conexão morta
+  keepalives_idle: 20
+  # Intervalo entre os keepalive
+  keepalives_interval: 5
+  # Máximo número de tentativas de keepalive
+  keepalives_count: 5
+  # Opções adicionais para a conexão
+  #   Notas:
+  #     - Suprimir a saída desnecessária com client_min_messages
+  #     - pg_backup_start e pg_backup_stop precisam ser executados na
+  #       mesma sessão, portanto, deve-se desativar idle_session_timeout
+  #       para evitar a interrupção da sessão.
+  #     - Desativar statement_timeout para que os comando SQL não sejam interrompidos por tempo de execução
+  options: -c client_min_messages=ERROR -c idle_session_timeout=0 -c statement_timeout=0
+
+oci:
+  # Configurações para autenticação na Oracle Cloud Infrastructure (OCI)
+  config:
+    # OCID do usuário OCI
+    user: ocid1.user.oc1..aaaaaaaa2no3......
+    # Conteúdo da chave privada
+    key_content: |
+      -----BEGIN PRIVATE KEY-----
+      MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDjOK850mKVVPwP
+      r/pa8C4eqtKGU9srwEKv8MWfo7HeJsFXvnHkMvXJwJrXLbGqA+BjCLjlG6KavWkc
+      kGBWiNaDg+lpRStKK+LEbPvzysM9dBDNCqr5XV9LZP7I+nJ4jynPB893HVctoNKX
+      vLM750x+0hgDWcPPmmsurmk/P0vQY0C72hctIHmWNdwQ/NzS0UnjSIoaecP3BOqv
+      ...
+      ...
+      dykq6/9d7dwH2X4G8XagYE1Xusp9brsCSm761boeBou6LkoPi8wwPAAzNV5ZseCk
+      Uk5KNNVZm2dAedYS6pJXEofxWEiE+QgQMlygJ5qOSqLLsfXPXG4YZ5VaoVfmqZoz
+      IS4dzW9oOjVWGwtxrjLDkLCK1g==
+      -----END PRIVATE KEY-----
+    # Fingerprint do par de chaves RSA
+    fingerprint: 81:d7:24:cd:1d:05...
+    # OCID da tenancy
+    tenancy: ocid1.tenancy.oc1..aaaaaaaa356vm2j4st2vky...
+    # Identificação da região de acesso
+    region: sa-saopaulo-1
+  # OCID do compartimento OCI onde o block volume se encontra
+  compartiment_ocid: ocid1.compartment.oc1....
+  # OCID do volume OCI que será realizado backup
+  volume_ocid: ocid1.volume.oc1....
+  # Tag definida para identificação e liberação de acesso ao backup do block volume
+  defined_tags: { "backup": {"access": "BACKUP-XXX"} }
+  # Número de dias de retenção dos os backups no OCI
+  retention_days: 7
+
+logging:
+  # Nível de log do script
+  # Valores válidos: [DEBUG, INFO, WARNING, ERROR, CRITICAL]
+  level: INFO
+  # Capacidade de registros de logs para o buffer em memória
+  memory_capacity: 1024
+
+mail:
+  # Endereço de origem do e-mail
+  from: <send_from@empresa.com.br>
+  # Endereço(s) de destinatário(s) do e-mail
+  # Mais de um valor, separar por vírgula
+  to: <send_to@empresa.com.br>
+  # Endereço do servidor SMTP
+  host: <smtp.empresa.com.br>
+  # Porta do servidor SMTP
+  port: 587
+  # Usuário para autenticação
+  username: <email@empresa.com.br>
+  # Senha para autenticação
+  password: <senha>
+  # Nome do arquivo de template de e-mail
+  template: mail.template.j2
