@@ -10,18 +10,6 @@ O objetivo deste script é realizar um backup consistente e seguro do banco de d
 - O usuário de conexão ao PostgreSQL deve ter permissões adequadas para iniciar e finalizar backups (pg_backup_start e pg_backup_stop).
 - O script deve ter permissão para acessar e criar backups de volume na OCI.
 
-## Dependências
-
-Se faz necessário instalar biblioteca para acesso a banco dados PostgreSQL e o SDK da Oracle OCI.
-
-```console
-# apt install --no-install-recommends --no-install-suggests python3-pip
-# UMASK=$(umask)
-# umask 022
-# sudo pip3 install --upgrade psycopg2-binary oci
-# umask $UMASK
-```
-
 ## Configurações
 
 ### PostgreSQL
@@ -129,13 +117,25 @@ Deve-se criar uma conta com privilégios mínimos:
 
 ### Script `pg_backup_oci`
 
-1. Realizar o clone do projeto para o diretório **/etc**:
+1. Dependências:
+
+   Se faz necessário instalar biblioteca para acesso a banco dados PostgreSQL e o SDK da Oracle OCI.
+
+   ```console
+   # apt install --no-install-recommends --no-install-suggests python3-pip
+   # UMASK=$(umask)
+   # umask 022
+   # sudo pip3 install --upgrade psycopg2-binary oci
+   # umask $UMASK
+   ```
+
+2. Realizar o clone do projeto para o diretório **/etc**:
 
    ```console
    # git -C /etc clone --depth 1 https://github.com/cleberb/pg_backup_oci.git
    ```
 
-2. Adequar as permissões do diretório e arquivos:
+3. Adequar as permissões do diretório e arquivos:
 
    ```console
    # chown -R root:root /etc/pg_backup_oci
@@ -143,14 +143,14 @@ Deve-se criar uma conta com privilégios mínimos:
    # chmod 750 /etc/pg_backup_oci/pg_backup_oci.py
    ```
 
-3. Criar o arquivo de configuração com base no modelo e adequar sua permissão:
+4. Criar o arquivo de configuração com base no modelo e adequar sua permissão:
 
    ```console
    # cp -a /etc/pg_backup_oci/{config.yml.example,config.yml}
    # chmod 400 /etc/pg_backup_oci/config.yml
    ```
 
-4. Definir as configurações de `config.yml`:
+5. Definir as configurações de `config.yml`:
 
    Ajustes os valores conforme o ambiente, definindo dados da empresa, uma descrição ao processo de backup, identificando banco de dados e/ou aplicação envolvidos, dados de conexão ao banco de dados, dados de conexão a API da Oracle OCI e dados do block volume que será feito backup, configurações de logs e de e-mail.
 
