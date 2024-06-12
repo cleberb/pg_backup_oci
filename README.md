@@ -146,7 +146,7 @@ Deve-se criar uma conta com privilégios mínimos:
 4. Criar o arquivo de configuração com base no modelo e adequar sua permissão:
 
    ```console
-   # cp -a /etc/pg_backup_oci/{config.yml.example,config.yml}
+   # cp -a /etc/pg_backup_oci/{config.example.yml,config.yml}
    # chmod 400 /etc/pg_backup_oci/config.yml
    ```
 
