@@ -88,7 +88,7 @@ Deve-se criar uma conta com privilégios mínimos:
        > - Necessário incluir o verbo `inspect` para os locais `compartiments`, `volumes` e `volume-backups` sem definir tag de acesso, para que seja possível listar todos os backups dos volumes.
 
        ```txt
-       Allow group backup_db to inspect compartiments in compartment <COMPARTIMENT-XXX>
+       Allow group backup_db to inspect compartments in compartment <COMPARTIMENT-XXX>
        Allow group backup_db to inspect volumes in compartment <COMPARTIMENT-XXX>
        Allow group backup_db to inspect volume-backups in compartment <COMPARTIMENT-XXX>
        Allow group backup_db to use volumes in compartment <COMPARTIMENT-XXX> where target.resource.tag.backup.access = '<BACKUP-XXX>'
