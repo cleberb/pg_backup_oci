@@ -135,6 +135,7 @@ Deve-se criar uma conta com privilégios mínimos:
    # wget https://github.com/cleberb/pg_backup_oci/archive/refs/heads/main.zip
    # unzip main.zip
    # mv pg_backup_oci-main /etc/pg_backup_oci
+   # rm -f main.zip
    ```
 
 3. Adequar as permissões do diretório e arquivos:
