@@ -6,8 +6,12 @@ O objetivo deste script é realizar um backup consistente e seguro do banco de d
 
 ## Requisitos mínimos
 
-- O diretório de dados do PostgreSQL (data_directory) deve residir em um único volume de disco. Isso é crucial para que todos os dados estejam sincronizados na mesma linha do tempo durante a criação do snapshot/backup.
+- O diretório de dados do PostgreSQL (Arquivos de bancos de dados, tabelas, arquivos wal, etc) deve residir em um único volume de disco. Isso é crucial para que todos os dados estejam sincronizados na mesma linha do tempo durante a criação do snapshot/backup.
+
+- Evitar o uso de TABLESPACES, para simplicar a estrutura dos dados.
+
 - O usuário de conexão ao PostgreSQL deve ter permissões adequadas para iniciar e finalizar backups (pg_backup_start e pg_backup_stop).
+
 - O script deve ter permissão para acessar e criar backups de volume na OCI.
 
 ## Configurações
