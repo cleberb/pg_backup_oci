@@ -129,10 +129,12 @@ Deve-se criar uma conta com privilégios mínimos:
    # umask $UMASK
    ```
 
-2. Realizar o clone do projeto para o diretório **/etc**:
+2. Realizar o download do projeto para o diretório **/etc**:
 
    ```console
-   # git -C /etc clone --depth 1 https://github.com/cleberb/pg_backup_oci.git
+   # wget https://github.com/cleberb/pg_backup_oci/archive/refs/heads/main.zip
+   # unzip main.zip
+   # mv pg_backup_oci-main /etc/pg_backup_oci
    ```
 
 3. Adequar as permissões do diretório e arquivos:
