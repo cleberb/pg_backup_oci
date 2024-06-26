@@ -90,6 +90,9 @@ Deve-se criar uma conta com privilégios mínimos:
        > - Substitua a string `<COMPARTIMENT-XXX>` com o nome do compartimento em que se encontra o block volume.
        > - Substitua a string `<BACKUP-XXX>` com o valor da Tag Definida `backup.access`. Essa tag será utilizada para restringir o acesso a um block volume específico.
        > - Necessário incluir o verbo `inspect` para os locais `compartiments`, `volumes` e `volume-backups` sem definir tag de acesso, para que seja possível listar todos os backups dos volumes.
+       > - A permissão para a ação `VOLUME_BACKUP_DELETE` deve ser declarada de forma isolada. Ela trabalha em conjunto a regra
+       >   `use volumes .... where target.resource.tag.backup.access = '<BACKUP-XXX>'` limitando o volumes/backups que poderão ser
+       >   excluídos.
 
        ```txt
        Allow group backup_db to inspect compartments in compartment <COMPARTIMENT-XXX>
@@ -97,6 +100,7 @@ Deve-se criar uma conta com privilégios mínimos:
        Allow group backup_db to inspect volume-backups in compartment <COMPARTIMENT-XXX>
        Allow group backup_db to use volumes in compartment <COMPARTIMENT-XXX> where target.resource.tag.backup.access = '<BACKUP-XXX>'
        Allow group backup_db to manage volume-backups in compartment <COMPARTIMENT-XXX> where target.resource.tag.backup.access = '<BACKUP-XXX>'
+       allow group backup_db to manage volume-backups in compartment DATABASES where request.permission='VOLUME_BACKUP_DELETE'
        ```
 
 5) Criar Tag Definida para gerenciar o acesso ao backup de um block volume específico:

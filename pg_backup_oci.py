@@ -247,10 +247,14 @@ def oci_retention_volume_backups(config: AppConfig, logger: logging.Logger):
     client = oci.core.BlockstorageClient(config.oci_config)
 
     # Listar todos os backups do block volume no compartimento
+    # OBS: sort_by="TIMECREATED" ordena de forma descendente por padrão,
+    #      mas se faz necessário especificar sort_order="ASC" para garantir
+    #      esse comportamento.
     volume_backups = client.list_volume_backups(
         compartment_id=config.oci_compartiment_ocid,
         volume_id=config.oci_volume_ocid,
-        sort_order="DESC",
+        sort_by="TIMECREATED",
+        sort_order="ASC",
         lifecycle_state="AVAILABLE"
     )
 
