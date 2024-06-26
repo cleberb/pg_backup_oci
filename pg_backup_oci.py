@@ -17,7 +17,7 @@ import oci
 from oci.config import validate_config
 
 # Versão do script
-VERSION = "1.0"
+VERSION = "1.1"
 
 class AppConfig:
     def __init__(self, yaml_file: str):
